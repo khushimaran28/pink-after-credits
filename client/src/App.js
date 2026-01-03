@@ -1,34 +1,49 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AfterTheCredits from "./pages/AfterTheCredits";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 
-function App() {
+/* 🔥 Animated Routes Wrapper */
+function AnimatedRoutes() {
+  const location = useLocation();
+
   return (
-    <Router>
-      <Routes>
-        {/* public routes */}
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {/* Public routes */}
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<Home />} />
 
-        {/* protected routes */}
-        <Route 
-          path="/after-the-credits" 
+        {/* Protected routes */}
+        <Route
+          path="/after-the-credits"
           element={
             <ProtectedRoute>
               <AfterTheCredits />
             </ProtectedRoute>
-          } 
+          }
         />
 
-        {/* fallback */}
+        {/* Fallback */}
         <Route path="*" element={<Home />} />
       </Routes>
-    </Router>
+    </AnimatePresence>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <AnimatedRoutes />
+      </Router>
+    </AuthProvider>
   );
 }
 

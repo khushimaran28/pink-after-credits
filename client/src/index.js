@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Toaster } from 'react-hot-toast';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -10,6 +11,17 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <App />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: "#fff1f5",
+            color: "#d74774",
+            borderRadius: "12px",
+            fontSize: "14px",
+          },
+        }}
+      />
     </AuthProvider>
   </React.StrictMode>
 );

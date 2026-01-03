@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/Auth.css";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
+import { apiRequest } from "../utils/api";
+import PageTransition from "../components/PageTransition";
 
 export default function Login() {
   const { login } = useAuth();
@@ -10,40 +12,64 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [stage, setStage] = useState("form");
+
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  
+  const MIN_PASSWORD_LENGTH = 6;
+
+  const validate = () => {
+    if (!email) {
+      return "Email is required.";
+    }
+
+    if (!isValidEmail(email)) {
+      return "That doesn't look like a valid email.";
+    }
+
+    if (!password) {
+      return "Password is required.";
+    }
+
+    if (password.length < MIN_PASSWORD_LENGTH) {
+      return "Password should be at least 6 characters.";
+    }
+
+    return "";
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      setError("Please enter both email and password.");
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
       return;
     }
-
+    
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const data = await apiRequest("/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      login(data.token, data.user, rememberMe);
+      setStage("welcome");
 
-      if (!res.ok) {
-        setError(data.message || "Invalid credentials");
-        return;
-      }
-
-      login(data.token, data.user);
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1200);
     } catch (err) {
-      setError("Something went wrong. Try again.");
+      setError(err.message || "Something went wrong. Try again.");
     }
   };
 
   return (
+    <PageTransition>
     <div className="auth">
       {/* LEFT BRAND SIDE */}
       <div className="auth__brand">
@@ -53,37 +79,67 @@ export default function Login() {
       </div>
 
       {/* RIGHT FORM SIDE */}
-      <div className="auth__card">
-        <h2>Welcome Back, Gorgeous</h2>
+      <div className={`auth__card ${stage === "welcome" ? "auth__card--exit" : ""}`}>
+        {stage === "form" && (
+          <>
+            <h2>Welcome Back, Gorgeous</h2>
 
-        <form className="auth__form" onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            <form className="auth__form" onSubmit={handleLogin}>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+              <div className="auth__password-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
 
-          {error && <p className="auth__error">{error}</p>}
+                <span
+                  className="auth__eye"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </span>
+              </div>
 
-          <button type="submit">Log In</button>
-        </form>
+              <label className="auth__remeber">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                />
+                Remember Me
+              </label>
 
-        <p className="auth__switch">
-          Don’t have an account? <Link to="/signup">Sign up</Link>
-        </p>
+              {error && <p className="auth__error">{error}</p>}
 
-        <p className="auth__footer">
-          A safe space for good taste, big feelings, and curated chaos.
-        </p>
+              <button type="submit">Log In</button>
+            </form>
+
+            <p className="auth__switch">
+              First time? Let's fix that. <Link to="/signup">Sign up</Link>
+            </p>
+
+            <p className="auth__footer">
+              A safe space for good taste, big feelings, and curated chaos.
+            </p>
+          </>
+        )}
+
+        {stage === "welcome" && (
+          <div className="auth__welcome">
+            <p>Welcome back.</p>
+            <span>You've been missed.</span>
+          </div>
+        )}
       </div>
     </div>
+    </PageTransition>
   );
 }

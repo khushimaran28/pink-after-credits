@@ -125,3 +125,112 @@
     display: none;
   }
 }
+
+.auth__password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.auth__eye {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  cursor: pointer;
+
+  opacity: 0.6;
+
+  line-height: 1;
+  height: 18px;
+  width: 18px;
+
+  user-select: none;
+
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.auth__eye:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.auth__eye:focus {
+  outline: none;
+}
+
+.auth__remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #777;
+  margin-top: 8px;
+}
+
+.auth__error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #d74774;
+  opacity: 0.9;
+}
+
+.auth__hint {
+  font-size: 12px;
+  color: #d74774;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+/* Exit Animation */
+.auth__card--exit {
+  animation: cardExit 0.6s ease forwards;
+}
+
+@keyframes cardExit {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+/* Welcome Micro Moment */
+.auth__welcome {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+.auth__welcome p {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  color: #d74774;
+  margin-bottom: 6px;
+}
+
+.auth__welcome span {
+  font-size: 14px;
+  color: #777;
+  font-style: italic;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

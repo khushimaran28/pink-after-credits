@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import "../styles/Navbar.css";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -15,6 +16,19 @@ export default function Navbar({ active }) {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user, logout } = useAuth();
+  const location = useLocation();
+
+  const handleLogout = () => {
+    const confirm = window.confirm("Leaving already, gorgeous?");
+    if (!confirm) return;
+
+    logout();
+    toast.success("You’ve been logged out 💋");
+     
+    if (location.pathname !== "/") {
+      navigate("/login");
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,21 +69,24 @@ export default function Navbar({ active }) {
           icon={<LuSearch />}
           label="Explore"
           active={active === "explore"}
-          onClick={() => navigate("/explore")}
+          onClick={() => user && navigate("/explore")}
+          disabled={!user}
         />
 
         <NavItem
           icon={<LuMessageCircle />}
           label="Connect"
           active={active === "connect"}
-          onClick={() => navigate("/connect")}
+          onClick={() => user && navigate("/connect")}
+          disabled={!user}
         />
 
         <NavItem
           icon={<LuFilm />}
           label="After the Credits"
           active={active === "after-credits"}
-          onClick={() => navigate("/after-the-credits")}
+          onClick={() => user && navigate("/after-the-credits")}
+          disabled={!user}
         />
       </div>
 
@@ -80,9 +97,10 @@ export default function Navbar({ active }) {
             <NavItem
               icon={<LuUser />}
               label="Profile"
-              onClick={() => navigate("/profile")}
+              onClick={() => user && navigate("/profile")}
+              disabled={!user}
             />
-            <button className="navbar__logout" onClick={logout}>
+            <button className="navbar__logout" onClick={handleLogout}>
               Logout
             </button>
           </>
@@ -99,11 +117,13 @@ export default function Navbar({ active }) {
 }
 
 /* Reusable nav item */
-function NavItem({ icon, label, active, onClick }) {
+function NavItem({ icon, label, active, onClick, disabled }) {
   return (
     <div
-      className={`navbar__item ${active ? "active" : ""}`}
-      onClick={onClick}
+      className={`navbar__item
+        ${active ? "active" : ""}
+        ${disabled ? "disabled" : ""}`}
+      onClick={!disabled? onClick: undefined}
     >
       <div className="navbar__icon">{icon}</div>
       <span className="navbar__label">{label}</span>

@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import { useEffect } from "react";
 import "../styles/AfterTheCredits.css";
+import PageTransition from "../components/PageTransition";
 
 export default function AfterTheCredits() {
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function AfterTheCredits() {
   }, []);
 
   return (
+    <PageTransition>
     <>
       {/* NAVBAR */}
       <Navbar active="after-credits" />
@@ -153,5 +155,6 @@ export default function AfterTheCredits() {
         </div>
       </section>
     </>
+    </PageTransition>
   );
 }

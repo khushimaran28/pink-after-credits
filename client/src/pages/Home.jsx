@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import MoodRow from "../components/MoodRow";
 import "../styles/Home.css";
 import { useEffect, useState } from "react";
+import PageTransition from "../components/PageTransition";
 import { dummyMovies } from "../data/dummyMovies";
 
 export default function Home() {
@@ -46,6 +47,7 @@ export default function Home() {
   }, [index, mode]);
 
   return (
+    <PageTransition>
     <>
       <Navbar active="home" />
 
@@ -126,5 +128,6 @@ export default function Home() {
 
       </main>
     </>
+    </PageTransition>
   );
 }

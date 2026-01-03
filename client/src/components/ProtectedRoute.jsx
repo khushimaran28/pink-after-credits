@@ -6,13 +6,25 @@ const DEV_MODE = false;
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
 
-  //DEV MODE BYPASS
+  // DEV MODE: bypass auth completely
   if (DEV_MODE) {
     return children;
   }
 
-  if (loading) return null;
-  if (!user) return <Navigate to="/login" />;
+  // While checking auth, show nothing but avoid crash/flash
+  if (loading) {
+    return (
+      <div style={{ padding: "120px", textAlign: "center", color: "#d74774" }}>
+        Loading...
+      </div>
+    );
+  }
 
+  // Not logged in → redirect
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Logged in → allow access
   return children;
 }
