@@ -1,0 +1,32 @@
+/* src/styles/MovieCard.css */
+
+.movie-card {
+  min-width: 160px;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.movie-card__image {
+  height: 240px;
+  border-radius: 14px;
+  background: linear-gradient(
+    to top,
+    rgba(215, 71, 116, 0.25),
+    transparent
+  );
+  background-color: #f7c6d3;
+}
+
+.movie-card__title {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #2e2e2e;
+  opacity: 0.8;
+}
+
+/* Hover */
+.movie-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 16px 40px rgba(215, 71, 116, 0.2);
+}

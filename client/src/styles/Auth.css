@@ -1,0 +1,127 @@
+/* PAGE WRAPPER */
+.auth {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #fff1f5;
+  font-family: "Inter", sans-serif;
+}
+
+/* LEFT BRAND */
+.auth__brand {
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth__brand h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 48px;
+  color: #d74774;
+  margin-bottom: 8px;
+}
+
+.auth__tagline {
+  font-style: italic;
+  color: #d74774;
+  margin-bottom: 24px;
+}
+
+.auth__line {
+  font-size: 18px;
+  color: #555;
+  max-width: 360px;
+}
+
+/* RIGHT CARD */
+.auth__card {
+  background: white;
+  margin: auto;
+  padding: 56px 48px;
+  width: 420px;
+  border-radius: 24px;
+
+  box-shadow:
+    0 30px 60px rgba(215, 71, 116, 0.12),
+    0 10px 20px rgba(215, 71, 116, 0.08);
+}
+
+.auth__card h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 32px;
+  color: #d74774;
+  margin-bottom: 32px;
+}
+
+/* FORM */
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth__form input {
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid #f3c2d3;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.auth__form input:focus {
+  border-color: #d74774;
+  box-shadow: 0 0 0 4px rgba(215, 71, 116, 0.15);
+}
+
+/* BUTTON */
+.auth__form button {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 30px;
+  border: none;
+  background-color: #d74774;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth__form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(215, 71, 116, 0.35);
+}
+
+/* SWITCH */
+.auth__switch {
+  margin-top: 24px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.auth__switch a {
+  color: #d74774;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* FOOTER */
+.auth__footer {
+  margin-top: 32px;
+  font-size: 12px;
+  text-align: center;
+  color: #777;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .auth {
+    grid-template-columns: 1fr;
+  }
+
+  .auth__brand {
+    display: none;
+  }
+}

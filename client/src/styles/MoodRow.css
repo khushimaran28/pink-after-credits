@@ -1,0 +1,126 @@
+/* src/styles/MoodRow.css */
+
+.mood-row {
+  margin-bottom: 80px;
+}
+
+/* HEADER */
+.mood-row__header {
+  margin-bottom: 20px;
+}
+
+.mood-row__header h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  color: #d74774;
+}
+
+.mood-row__header p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* WRAPPER */
+.mood-row__wrapper {
+  position: relative;
+}
+
+/* CARD STRIP */
+.mood-row__cards {
+  display: flex;
+  gap: 20px;
+  overflow-x: scroll;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+
+  /* hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+}
+
+.mood-row__cards::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
+/* MOVIE CARD */
+.movie-card {
+  min-width: 200px;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.movie-card__poster {
+  height: 280px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffd1df, #f6a7bd);
+}
+
+.movie-card__title {
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* HOVER */
+.movie-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 20px 40px rgba(215, 71, 116, 0.18);
+}
+
+/* ARROWS */
+.mood-row__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(255, 241, 245, 0.9);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 10;
+}
+
+.mood-row__arrow svg {
+  font-size: 20px;
+  color: #d74774;
+}
+
+/* show arrows on hover */
+.mood-row__wrapper:hover .mood-row__arrow {
+  opacity: 1;
+}
+
+.mood-row__arrow--left {
+  left: -12px;
+}
+
+.mood-row__arrow--right {
+  right: -12px;
+}
+
+.mood-row__arrow:hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+/* DARK MOOD (Girls With Issues) */
+.mood-row--dark .mood-row__header h2 {
+  color: #8a2d4e; /* deeper, wine-pink */
+}
+
+.mood-row--dark .mood-row__header p {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* DARK MOOD – subtle visual shift */
+.mood-row--dark .movie-card__poster {
+  background: linear-gradient(180deg, #c98aa1, #8a2d4e);
+}
