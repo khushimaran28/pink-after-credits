@@ -142,3 +142,48 @@
 .navbar__item.disabled .navbar__label {
   display: none;
 }
+
+.navbar__dropdown-wrapper {
+  position: relative;
+}
+
+.navbar__dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: #fff1f5;
+  border-radius: 14px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 140px;
+  box-shadow: 0 10px 30px rgba(215, 71, 116, 0.15);
+  animation: fadeIn 0.2s ease;
+}
+
+.navbar__dropdown button {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 13px;
+  color: #d74774;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.navbar__dropdown button:hover {
+  background: rgba(215, 71, 116, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

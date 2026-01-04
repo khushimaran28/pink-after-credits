@@ -1,6 +1,15 @@
+import { useState } from "react";
+import SaveToBoardModal from "./SaveToBoardModal";
+import { useBoards } from "../context/BoardsContext";
+import CreateBoardModal from "./CreateBoardModal";
+import toast from "react-hot-toast";
 import "../styles/MovieModal.css";
 
 export default function MovieModal({ movie, onClose }) {
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const { boards, addMovieToBoard, createBoard } = useBoards();
+  const [showCreateBoard, setShowCreateBoard] = useState(false);
+
   if (!movie) return null;
 
   return (
@@ -41,6 +50,14 @@ export default function MovieModal({ movie, onClose }) {
               {movie.review}
             </p>
 
+            {/* BUTTONS */}
+            <button
+              className="save-to-board-btn"
+              onClick={() => setShowSaveModal(true)}
+            >
+              Save to board 💖
+            </button>
+
             {/* WHERE TO WATCH */}
             {movie.watchOn && (
               <div className="modal__watch">
@@ -65,6 +82,39 @@ export default function MovieModal({ movie, onClose }) {
           </div>
         </div>
       </div>
+      
+      {showSaveModal && (
+        <SaveToBoardModal
+          boards={boards}
+          movie={movie}
+          onSave={(boardId) => {
+            const board = boards.find((b) => b.id === boardId);
+
+            addMovieToBoard(boardId, movie.id);
+            setShowSaveModal(false);
+
+            toast(`Saved to ${board.title} 💖`);
+          }}
+          onClose={() => setShowSaveModal(false)}
+          onCreateNew={() => {
+            setShowSaveModal(false);
+            setShowCreateBoard(true);
+            alert("Create board from dashboard ✨");
+          }}
+        />
+      )}
+
+      {showCreateBoard && (
+        <CreateBoardModal
+          onClose={() => setShowCreateBoard(false)}
+          onCreate={createBoard}
+          onCreated={(newBoard) => {
+            addMovieToBoard(newBoard.id, movie.id);
+            toast.success(`Saved to ${newBoard.title} 💖`);
+          }}
+        />
+      )}
+
     </div>
   );
 }

@@ -1,0 +1,31 @@
+.modal--small {
+  max-width: 420px;
+  padding: 24px;
+}
+
+.boards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.board-option {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: none;
+  background: #fff1f5;
+  color: #d74774;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+}
+
+.board-option:hover {
+  background: rgba(215, 71, 116, 0.12);
+}
+
+.board-option--new {
+  font-weight: 500;
+  background: none;
+}

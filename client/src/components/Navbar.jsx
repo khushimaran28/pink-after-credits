@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import "../styles/Navbar.css";
 import { useAuth } from "../context/AuthContext";
@@ -17,6 +17,8 @@ export default function Navbar({ active }) {
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user, logout } = useAuth();
   const location = useLocation();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     const confirm = window.confirm("Leaving already, gorgeous?");
@@ -29,6 +31,17 @@ export default function Navbar({ active }) {
       navigate("/login");
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,17 +106,21 @@ export default function Navbar({ active }) {
       {/* RIGHT: PROFILE */}
       <div className="navbar__profile">
         {user ? (
-          <>
+          <div className="navbar__dropdown-wrapper" ref={dropdownRef}>
             <NavItem
               icon={<LuUser />}
-              label="Profile"
-              onClick={() => user && navigate("/profile")}
-              disabled={!user}
+              label="You"
+              onClick={() => setShowDropdown((prev) => !prev)}
             />
-            <button className="navbar__logout" onClick={handleLogout}>
-              Logout
-            </button>
-          </>
+
+            {showDropdown && (
+              <div className="navbar__dropdown">
+                <button onClick={() => navigate("/profile")}>Profile</button>
+                <button onClick={() => navigate("/dashboard")}>Dashboard</button>
+                <button onClick={handleLogout}>Logout</button>
+              </div>
+            )}
+          </div>
         ) : (
           <NavItem
             icon={<LuUser />}

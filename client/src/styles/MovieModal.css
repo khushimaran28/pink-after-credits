@@ -129,3 +129,12 @@
     transform: translateY(0);
   }
 }
+
+.save-to-board-btn {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  color: #d74774;
+  font-size: 14px;
+  cursor: pointer;
+}

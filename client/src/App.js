@@ -4,9 +4,11 @@ import { AnimatePresence } from "framer-motion";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
 import AfterTheCredits from "./pages/AfterTheCredits";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import { BoardsProvider } from "./context/BoardsContext";
 
 /* 🔥 Animated Routes Wrapper */
 function AnimatedRoutes() {
@@ -30,6 +32,15 @@ function AnimatedRoutes() {
           }
         />
 
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Fallback */}
         <Route path="*" element={<Home />} />
       </Routes>
@@ -40,9 +51,11 @@ function AnimatedRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AnimatedRoutes />
-      </Router>
+      <BoardsProvider>
+        <Router>
+          <AnimatedRoutes />
+        </Router>
+      </BoardsProvider>
     </AuthProvider>
   );
 }

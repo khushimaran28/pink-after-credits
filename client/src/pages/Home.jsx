@@ -6,13 +6,24 @@ import "../styles/Home.css";
 import { useEffect, useState } from "react";
 import PageTransition from "../components/PageTransition";
 import { dummyMovies } from "../data/dummyMovies";
+import { useAuth } from "../context/AuthContext";
 
 export default function Home() {
-  const fullText = "What are you in the mood to feel today?";
   const [displayText, setDisplayText] = useState("");
   const [index, setIndex] = useState(0);
   const [mode, setMode] = useState("typing");
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const fullText = user 
+    ? "Glad you're back! Ready to pick a mood?"
+    : "What are you in the mood to feel today?";
+
+  useEffect(() => {
+    setDisplayText("");
+    setIndex(0);
+    setMode("typing");
+  }, [fullText]);
 
   useEffect(() => {
     let timeout;
@@ -44,7 +55,7 @@ export default function Home() {
     }
 
     return () => clearTimeout(timeout);
-  }, [index, mode]);
+  }, [index, mode, fullText]);
 
   return (
     <PageTransition>
@@ -105,27 +116,30 @@ export default function Home() {
         </div>
 
         {/* CTA */}
-        <section className="home__cta">
-          <p>Found something you love?</p>
-          <button>Build your own mood board</button>
-        </section>
+        {user && (
+          <section className="home__cta">
+            <p>Found something you love?</p>
+            <button>Build your own mood board</button>
+          </section>
+        )}
 
         {/* LOGIN PROMPT */}
-        <section style={{ textAlign: "center", marginTop: "80px" }}>
-          <button
-            onClick={() => navigate("/login")}
-            style={{
-              background: "none",
-              border: "none",
-              color: "#d74774",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
-          >
-            Log in to save your taste →
-          </button>
-        </section>
-
+        {!user && (
+          <section style={{ textAlign: "center", marginTop: "80px" }}>
+            <button
+              onClick={() => navigate("/login")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#d74774",
+                fontSize: "14px",
+                cursor: "pointer",
+              }}
+            >
+              Log in to save your taste →
+            </button>
+          </section>
+        )}
       </main>
     </>
     </PageTransition>
