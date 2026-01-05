@@ -18,26 +18,15 @@ export default function Login() {
 
   const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  
+
   const MIN_PASSWORD_LENGTH = 6;
 
   const validate = () => {
-    if (!email) {
-      return "Email is required.";
-    }
-
-    if (!isValidEmail(email)) {
-      return "That doesn't look like a valid email.";
-    }
-
-    if (!password) {
-      return "Password is required.";
-    }
-
-    if (password.length < MIN_PASSWORD_LENGTH) {
+    if (!email) return "Email is required.";
+    if (!isValidEmail(email)) return "That doesn't look like a valid email.";
+    if (!password) return "Password is required.";
+    if (password.length < MIN_PASSWORD_LENGTH)
       return "Password should be at least 6 characters.";
-    }
-
     return "";
   };
 
@@ -50,11 +39,11 @@ export default function Login() {
       setError(validationError);
       return;
     }
-    
+
     try {
-      const data = await apiRequest("/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
+      const data = await apiRequest("/auth/login", "POST", {
+        email,
+        password,
       });
 
       login(data.token, data.user, rememberMe);
@@ -70,76 +59,81 @@ export default function Login() {
 
   return (
     <PageTransition>
-    <div className="auth">
-      {/* LEFT BRAND SIDE */}
-      <div className="auth__brand">
-        <h1>Pink After Credits</h1>
-        <p className="auth__tagline">movies, but make it personal</p>
-        <p className="auth__line">Good taste requires an account.</p>
-      </div>
+      <div className="auth">
+        {/* LEFT BRAND SIDE */}
+        <div className="auth__brand">
+          <h1>Pink After Credits</h1>
+          <p className="auth__tagline">movies, but make it personal</p>
+          <p className="auth__line">Good taste requires an account.</p>
+        </div>
 
-      {/* RIGHT FORM SIDE */}
-      <div className={`auth__card ${stage === "welcome" ? "auth__card--exit" : ""}`}>
-        {stage === "form" && (
-          <>
-            <h2>Welcome Back, Gorgeous</h2>
+        {/* RIGHT FORM SIDE */}
+        <div
+          className={`auth__card ${
+            stage === "welcome" ? "auth__card--exit" : ""
+          }`}
+        >
+          {stage === "form" && (
+            <>
+              <h2>Welcome Back, Gorgeous</h2>
 
-            <form className="auth__form" onSubmit={handleLogin}>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-
-              <div className="auth__password-wrapper">
+              <form className="auth__form" onSubmit={handleLogin}>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
 
-                <span
-                  className="auth__eye"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? "🙈" : "👁️"}
-                </span>
-              </div>
+                <div className="auth__password-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
 
-              <label className="auth__remeber">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
-                />
-                Remember Me
-              </label>
+                  <span
+                    className="auth__eye"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "🙈" : "👁️"}
+                  </span>
+                </div>
 
-              {error && <p className="auth__error">{error}</p>}
+                <label className="auth__remeber">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={() => setRememberMe(!rememberMe)}
+                  />
+                  Remember Me
+                </label>
 
-              <button type="submit">Log In</button>
-            </form>
+                {error && <p className="auth__error">{error}</p>}
 
-            <p className="auth__switch">
-              First time? Let's fix that. <Link to="/signup">Sign up</Link>
-            </p>
+                <button type="submit">Log In</button>
+              </form>
 
-            <p className="auth__footer">
-              A safe space for good taste, big feelings, and curated chaos.
-            </p>
-          </>
-        )}
+              <p className="auth__switch">
+                First time? Let's fix that.{" "}
+                <Link to="/signup">Sign up</Link>
+              </p>
 
-        {stage === "welcome" && (
-          <div className="auth__welcome">
-            <p>Welcome back.</p>
-            <span>You've been missed.</span>
-          </div>
-        )}
+              <p className="auth__footer">
+                A safe space for good taste, big feelings, and curated chaos.
+              </p>
+            </>
+          )}
+
+          {stage === "welcome" && (
+            <div className="auth__welcome">
+              <p>Welcome back.</p>
+              <span>You've been missed.</span>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
     </PageTransition>
   );
 }

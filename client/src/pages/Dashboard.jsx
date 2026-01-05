@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import PageTransition from "../components/PageTransition";
 import CreateBoardModal from "../components/CreateBoardModal";
@@ -9,6 +10,7 @@ import "../styles/Dashboard.css";
 export default function Dashboard() {
   const { boards, createBoard } = useBoards();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const navigate = useNavigate();
   
   const allMovies = Object.values(dummyMovies).flat();
 
@@ -42,7 +44,11 @@ export default function Dashboard() {
             ) : (
               <div className="boards-grid">
                 {boards.map((board) => (
-                  <div key={board.id} className="board-card">
+                  <div
+                    key={board._id}
+                    className="board-card"
+                    onClick={() => navigate(`/boards/${board._id}`)}
+                  >
                     <h3>{board.title}</h3>
 
                     {board.movies.length === 0 ? (

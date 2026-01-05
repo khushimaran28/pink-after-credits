@@ -1,49 +1,101 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { apiRequest } from "../utils/api";
 
 const BoardsContext = createContext();
 
 export function BoardsProvider({ children }) {
   const [boards, setBoards] = useState([]);
-  const [hydrated, setHydrated] = useState(false);
+  const { user } = useAuth();
 
-  // Load from localStorage on mount
+  // 📦 FETCH BOARDS
   useEffect(() => {
-    const storedBoards = localStorage.getItem("boards");
-
-    if (storedBoards) {
-      try {
-        setBoards(JSON.parse(storedBoards));
-      } catch {
-        setBoards([]);
-      }
+    if (!user) {
+      setBoards([]);
+      return;
     }
 
-    setHydrated(true);
-  }, []);
+    const fetchBoards = async () => {
+      try {
+        const data = await apiRequest("/boards");
+        setBoards(data);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
 
-  // Persist on change
-  useEffect(() => {
-    if (!hydrated) return;
-    localStorage.setItem("boards", JSON.stringify(boards));
-  }, [boards, hydrated]);
+    fetchBoards();
+  }, [user]);
 
-  const createBoard = (board) => {
-    setBoards((prev) => [...prev, board]);
+  // 🎀 CREATE BOARD
+  const createBoard = async ({ title, description }) => {
+    const newBoard = await apiRequest(
+      "/boards",
+      "POST",
+      { title, description }
+    );
+
+    setBoards((prev) => [newBoard, ...prev]);
+    return newBoard;
   };
 
-  const addMovieToBoard = (boardId, movieId) => {
+  // ✏️ RENAME BOARD
+  const renameBoard = async (boardId, newTitle) => {
+    const updatedBoard = await apiRequest(
+      `/boards/${boardId}`,
+      "PUT",
+      { title: newTitle }
+    );
+
     setBoards((prev) =>
-      prev.map((board) =>
-        board.id === boardId && !board.movies.includes(movieId)
-          ? { ...board, movies: [...board.movies, movieId] }
-          : board
-      )
+      prev.map((b) => (b._id === updatedBoard._id ? updatedBoard : b))
+    );
+  };
+
+  // 🗑️ DELETE BOARD
+  const deleteBoard = async (boardId) => {
+    await apiRequest(`/boards/${boardId}`, "DELETE");
+
+    setBoards((prev) => prev.filter((b) => b._id !== boardId));
+  };
+
+  // 🎬 ADD MOVIE TO BOARD
+  const addMovieToBoard = async (boardId, movieId) => {
+    const updatedBoard = await apiRequest(
+      `/boards/${boardId}/movies`,
+      "POST",
+      { movieId }
+    );
+
+    setBoards((prev) =>
+      prev.map((b) => (b._id === updatedBoard._id ? updatedBoard : b))
+    );
+
+    return updatedBoard;
+  };
+
+  // 🗑️ REMOVE MOVIE FROM BOARD
+  const removeMovieFromBoard = async (boardId, movieId) => {
+    const updatedBoard = await apiRequest(
+      `/boards/${boardId}/movies/${movieId}`,
+      "DELETE"
+    );
+
+    setBoards((prev) =>
+      prev.map((b) => (b._id === updatedBoard._id ? updatedBoard : b))
     );
   };
 
   return (
     <BoardsContext.Provider
-      value={{ boards, createBoard, addMovieToBoard }}
+      value={{
+        boards,
+        createBoard,
+        renameBoard,
+        deleteBoard,
+        addMovieToBoard,
+        removeMovieFromBoard,
+      }}
     >
       {children}
     </BoardsContext.Provider>

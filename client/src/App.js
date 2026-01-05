@@ -9,6 +9,8 @@ import AfterTheCredits from "./pages/AfterTheCredits";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { BoardsProvider } from "./context/BoardsContext";
+import BoardDetail from "./pages/BoardDetail";
+import Profile from "./pages/Profile";
 
 /* 🔥 Animated Routes Wrapper */
 function AnimatedRoutes() {
@@ -37,6 +39,24 @@ function AnimatedRoutes() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/boards/:boardId"
+          element={
+            <ProtectedRoute>
+              <BoardDetail />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

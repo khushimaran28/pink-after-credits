@@ -2,7 +2,6 @@ import "../styles/SaveToBoardModal.css";
 
 export default function SaveToBoardModal({
   boards,
-  movie,
   onSave,
   onClose,
   onCreateNew,
@@ -17,9 +16,9 @@ export default function SaveToBoardModal({
         <div className="boards-list">
           {boards.map((board) => (
             <button
-              key={board.id}
+              key={board._id}
               className="board-option"
-              onClick={() => onSave(board.id)}
+              onClick={() => onSave(board)}
             >
               {board.title}
             </button>

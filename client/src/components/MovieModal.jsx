@@ -1,5 +1,7 @@
 import { useState } from "react";
 import SaveToBoardModal from "./SaveToBoardModal";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { useBoards } from "../context/BoardsContext";
 import CreateBoardModal from "./CreateBoardModal";
 import toast from "react-hot-toast";
@@ -7,17 +9,17 @@ import "../styles/MovieModal.css";
 
 export default function MovieModal({ movie, onClose }) {
   const [showSaveModal, setShowSaveModal] = useState(false);
-  const { boards, addMovieToBoard, createBoard } = useBoards();
   const [showCreateBoard, setShowCreateBoard] = useState(false);
+
+  const { boards, addMovieToBoard, createBoard } = useBoards();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   if (!movie) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
         {/* CLOSE */}
         <button className="modal__close" onClick={onClose}>
           ×
@@ -27,33 +29,31 @@ export default function MovieModal({ movie, onClose }) {
         <div className="modal__header">
           <h2 className="modal__title">
             {movie.title}
-            {movie.year && (
-              <span className="modal__year"> ({movie.year})</span>
-            )}
+            {movie.year && <span className="modal__year"> ({movie.year})</span>}
           </h2>
         </div>
 
         {/* BODY */}
         <div className="modal__body">
-          {/* POSTER */}
           <div className="modal__poster">
             <img src={movie.poster} alt={movie.title} />
           </div>
 
-          {/* CONTENT */}
           <div className="modal__content">
-            <p className="modal__one-liner">
-              {movie.oneLiner}
-            </p>
+            <p className="modal__one-liner">{movie.oneLiner}</p>
+            <p className="modal__review">{movie.review}</p>
 
-            <p className="modal__review">
-              {movie.review}
-            </p>
-
-            {/* BUTTONS */}
+            {/* SAVE BUTTON */}
             <button
               className="save-to-board-btn"
-              onClick={() => setShowSaveModal(true)}
+              onClick={() => {
+                if (!user) {
+                  toast("Log in to save your taste 💖");
+                  navigate("/login");
+                  return;
+                }
+                setShowSaveModal(true);
+              }}
             >
               Save to board 💖
             </button>
@@ -70,10 +70,7 @@ export default function MovieModal({ movie, onClose }) {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <img
-                        src={platform.icon}
-                        alt={platform.name}
-                      />
+                      <img src={platform.icon} alt={platform.name} />
                     </a>
                   ))}
                 </div>
@@ -82,39 +79,51 @@ export default function MovieModal({ movie, onClose }) {
           </div>
         </div>
       </div>
-      
+
+      {/* SAVE TO BOARD MODAL */}
       {showSaveModal && (
         <SaveToBoardModal
           boards={boards}
           movie={movie}
-          onSave={(boardId) => {
-            const board = boards.find((b) => b.id === boardId);
+          onSave={async (board) => {
+            const boardTitle = board.title;
 
-            addMovieToBoard(boardId, movie.id);
+            try {
+              await addMovieToBoard(board._id, movie.id);
+              toast(`Saved to ${boardTitle} 💖`);
+            } catch (error) {
+              if (error.message?.toLowerCase().includes("already")) {
+                toast("Already in this board 💅");
+              } else {
+                toast("Couldn’t save movie 💔");
+              }
+            }
+
             setShowSaveModal(false);
-
-            toast(`Saved to ${board.title} 💖`);
           }}
           onClose={() => setShowSaveModal(false)}
           onCreateNew={() => {
             setShowSaveModal(false);
             setShowCreateBoard(true);
-            alert("Create board from dashboard ✨");
           }}
         />
       )}
 
+      {/* CREATE BOARD MODAL */}
       {showCreateBoard && (
         <CreateBoardModal
           onClose={() => setShowCreateBoard(false)}
           onCreate={createBoard}
-          onCreated={(newBoard) => {
-            addMovieToBoard(newBoard.id, movie.id);
-            toast.success(`Saved to ${newBoard.title} 💖`);
+          onCreated={async (newBoard) => {
+            try {
+              await addMovieToBoard(newBoard._id, movie.id);
+              toast(`Saved to ${newBoard.title} 💖`);
+            } catch {
+              toast("Couldn’t save movie 💔");
+            }
           }}
         />
       )}
-
     </div>
   );
 }

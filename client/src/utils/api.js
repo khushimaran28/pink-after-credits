@@ -1,17 +1,22 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "http://localhost:5000/api";
 
-export async function apiRequest(endpoint, options = {}) {
-  const token = localStorage.getItem("token");
+export async function apiRequest(endpoint, method = "GET", body) {
+  const token =
+    localStorage.getItem("token") ||
+    sessionStorage.getItem("token");
 
   const headers = {
     "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...options.headers,
   };
 
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
+    method,
     headers,
+    body: body ? JSON.stringify(body) : undefined,
   });
 
   const data = await response.json();

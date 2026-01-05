@@ -1,0 +1,59 @@
+.profile {
+  padding-top: 120px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.profile__header {
+  margin-bottom: 48px;
+}
+
+.profile__header h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  color: #d74774;
+}
+
+.profile__header p {
+  margin-top: 10px;
+  font-size: 15px;
+  opacity: 0.75;
+}
+
+/* STATS */
+.profile__stats {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+.profile__stats div span {
+  font-size: 28px;
+  font-weight: 600;
+  color: #d74774;
+}
+
+.profile__stats div p {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* BIO */
+.profile__bio {
+  margin-bottom: 40px;
+}
+
+.profile__bio h2,
+.profile__obsession h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #d74774;
+}
+
+.profile__bio p,
+.profile__obsession p {
+  font-size: 15px;
+  line-height: 1.7;
+  opacity: 0.8;
+}

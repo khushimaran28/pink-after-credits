@@ -1,0 +1,84 @@
+.board-detail {
+  padding-top: 120px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.board-detail__header {
+  margin-bottom: 40px;
+}
+
+.board-detail__back {
+  background: none;
+  border: none;
+  color: #d74774;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.board-detail__header h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  color: #d74774;
+}
+
+.board-detail__header p {
+  margin-top: 8px;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.board-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 24px;
+}
+
+.board-movie {
+  position: relative;
+}
+
+.remove-movie-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(255, 241, 245, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #d74774;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.board-movie:hover .remove-movie-btn {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.board-title-input {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
+  color: #d74774;
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+}
+
+.delete-board-btn {
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: rgba(215, 71, 116, 0.6);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.delete-board-btn:hover {
+  color: #d74774;
+}
