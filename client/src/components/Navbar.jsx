@@ -3,12 +3,15 @@ import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 import "../styles/Navbar.css";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import {
   LuHouse,
   LuSearch,
   LuMessageCircle,
   LuFilm,
   LuUser,
+  LuSun,
+  LuMoon,
 } from "react-icons/lu";
 
 export default function Navbar({ active }) {
@@ -16,6 +19,7 @@ export default function Navbar({ active }) {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -117,6 +121,23 @@ export default function Navbar({ active }) {
               <div className="navbar__dropdown">
                 <button onClick={() => navigate("/profile")}>Profile</button>
                 <button onClick={() => navigate("/dashboard")}>Dashboard</button>
+
+                {/* DARK MODE TOGGLE */}
+                <button
+                  className="navbar__theme-toggle"
+                  onClick={toggleTheme}
+                >
+                  { theme === "dark" ? (
+                    <>
+                      <LuSun /> Light mode
+                    </>
+                  ) : (
+                    <>
+                      <LuMoon /> Dark mode
+                    </>
+                  )}
+                </button>
+
                 <button onClick={handleLogout}>Logout</button>
               </div>
             )}

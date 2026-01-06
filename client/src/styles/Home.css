@@ -6,7 +6,7 @@ body {
 
 .home {
   padding: 140px 0 80px;
-  background-color: #fff1f5;
+  background-color: var(--bg);
 }
 
 /* central container */
@@ -25,7 +25,7 @@ body {
 .home__question {
   font-family: "Playfair Display", serif;
   font-size: 46px;
-  color: #d74774;
+  color: var(--accent);
 }
 
 /* blinking cursor */
@@ -56,7 +56,7 @@ body {
 }
 
 .home__cta button {
-  background-color: #d74774;
+  background-color: var(--accent);
   color: white;
   border: none;
   padding: 14px 28px;
@@ -68,5 +68,5 @@ body {
 
 .home__cta button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(215, 71, 116, 0.25);
+  box-shadow: var(--shadow-soft);
 }

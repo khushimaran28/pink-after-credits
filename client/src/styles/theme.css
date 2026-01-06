@@ -1,0 +1,35 @@
+/* ===============================
+   THEME VARIABLES
+   =============================== */
+
+/* 🌸 LIGHT MODE (default) */
+:root {
+  --bg: #fff1f5;
+  --bg-soft: #ffe6ee;
+  --card-bg: #ffffff;
+
+  --text-primary: #2e2e2e;
+  --text-muted: rgba(46, 46, 46, 0.6);
+
+  --accent: #d74774;
+  --accent-soft: rgba(215, 71, 116, 0.15);
+
+  --border-soft: rgba(215, 71, 116, 0.25);
+  --shadow-soft: 0 10px 30px rgba(215, 71, 116, 0.18);
+}
+
+/* 🌙 DARK MODE */
+[data-theme="dark"] {
+  --bg: #0f0a0d;
+  --bg-soft: #1a1216;
+  --card-bg: #1f161b;
+
+  --text-primary: #f6e9ee;
+  --text-muted: rgba(246, 233, 238, 0.6);
+
+  --accent: #e06a92;
+  --accent-soft: rgba(224, 106, 146, 0.2);
+
+  --border-soft: rgba(224, 106, 146, 0.3);
+  --shadow-soft: 0 10px 40px rgba(224, 106, 146, 0.25);
+}
